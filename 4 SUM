@@ -1,0 +1,32 @@
+public List<List<Integer>> fourSum(int[] nums, int target) {
+		ArrayList<List<Integer>> res = new ArrayList<List<Integer>>();
+		int len = nums.length;
+		if (nums == null || len < 4)
+			return res;
+
+		Arrays.sort(nums);
+
+		int max = nums[len - 1];
+		if (4 * nums[0] > target || 4 * max < target)
+			return res;
+
+		int i, z;
+		for (i = 0; i < len; i++) {
+			z = nums[i];
+			if (i > 0 && z == nums[i - 1])// avoid duplicate
+				continue;
+			if (z + 3 * max < target) // z is too small
+				continue;
+			if (4 * z > target) // z is too large
+				break;
+			if (4 * z == target) { // z is the boundary
+				if (i + 3 < len && nums[i + 3] == z)
+					res.add(Arrays.asList(z, z, z, z));
+				break;
+			}
+
+			threeSumForFourSum(nums, target - z, i + 1, len - 1, res, z);
+		}
+
+		return res;
+	}
